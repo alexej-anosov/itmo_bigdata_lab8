@@ -1,0 +1,14 @@
+spark:
+  app_name: "my_kmeans"
+  deploy_mode: "local"
+  driver_memory: "1g"
+  executor_memory: "2g"
+
+paths:
+  data: "../data/subset.csv"
+  model: "../model/my_kmeans"
+  
+kmeans:
+  k: 10
+  maxIter: 20
+  seed: 42
