@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  clickhouse-server:
+    image: yandex/clickhouse-server:latest
+    container_name: clickhouse-server
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    environment:
+      - CLICKHOUSE_USER=${CLICKHOUSE_USER}
+      - CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD}
+    volumes:
+      - ./clickhouse_data:/var/lib/clickhouse

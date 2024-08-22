@@ -5,8 +5,8 @@ spark:
   executor_memory: "2g"
 
 paths:
-  data: "../data/subset.csv"
-  model: "../model/my_kmeans"
+  data: "data/subset.csv"
+  model: "model/my_kmeans"
   
 kmeans:
   k: 10

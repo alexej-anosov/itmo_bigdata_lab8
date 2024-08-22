@@ -1,17 +1,11 @@
-import os
 import sys
 import logging
 import findspark
 from pyspark.ml import clustering, evaluation
 from pyspark.sql import SparkSession
-
 from config import config
-from preprocess import Preprocessor
-
-
-os.environ['SPARK_HOME'] = "/root/spark"
-os.environ['JAVA_HOME'] = '/usr/lib/jvm/java-21-openjdk-amd64'
-
+from data_manager import DataManager
+from pyspark.sql.functions import udf
 
 logging.basicConfig(
     level=logging.INFO,  
@@ -33,14 +27,16 @@ if __name__ == '__main__':
     .master(config.spark.deploy_mode)
     .config("spark.driver.memory", config.spark.driver_memory)
     .config("spark.executor.memory", config.spark.executor_memory)
+    .config("spark.jars", 'clickhouse-jdbc-0.6.4-all.jar, clickhouse-spark-runtime-3.3_2.13-0.7.3.jar') 
     .getOrCreate()
     ) 
-    
+
     logger.info('SparkSession created')
     
-    preprocessor = Preprocessor(spark_session, config.paths.data)
-    df = preprocessor.create_df()
-
+    data_manager = DataManager(spark_session, config.clickhouse.url, config.clickhouse.username, config.clickhouse.password)
+    
+    df = data_manager.read_and_preprocess(dbtable="my_db.openfood")
+    
     logger.info('DataFrame created')
     
     model_args = dict(config.kmeans)
@@ -56,6 +52,7 @@ if __name__ == '__main__':
     distanceMeasure="squaredEuclidean",
     )
     output = model.transform(df)
+    
     score = evaluator.evaluate(output)
     
     logger.info('Model evaluated')
@@ -64,6 +61,10 @@ if __name__ == '__main__':
     model.write().overwrite().save(config.paths.model)
     
     logger.info('Model saved')
+
+    data_manager.overwrtie_data('predictions', output.select('code'))
+
+    logger.info('Predictions saved')
     
     spark_session.stop()
     
