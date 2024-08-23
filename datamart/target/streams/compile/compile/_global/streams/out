@@ -1,0 +1,10 @@
+[0m[[0m[31merror[0m] [0m[0m/root/itmo_bigdata_lab7/datamart/src/main/scala/DataManager.scala:60:19: not found: type Connection[0m
+[0m[[0m[31merror[0m] [0m[0m  val connection: Connection = DriverManager.getConnection(clickhouseUrl, clickhouseUsername, clickhousePassword)[0m
+[0m[[0m[31merror[0m] [0m[0m                  ^[0m
+[0m[[0m[31merror[0m] [0m[0m/root/itmo_bigdata_lab7/datamart/src/main/scala/DataManager.scala:60:32: not found: value DriverManager[0m
+[0m[[0m[31merror[0m] [0m[0m  val connection: Connection = DriverManager.getConnection(clickhouseUrl, clickhouseUsername, clickhousePassword)[0m
+[0m[[0m[31merror[0m] [0m[0m                               ^[0m
+[0m[[0m[31merror[0m] [0m[0m/root/itmo_bigdata_lab7/datamart/src/main/scala/DataManager.scala:61:18: not found: type Statement[0m
+[0m[[0m[31merror[0m] [0m[0m  val statement: Statement = connection.createStatement()[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mthree errors found[0m
