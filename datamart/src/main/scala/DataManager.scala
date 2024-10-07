@@ -1,9 +1,37 @@
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.ml.feature.{VectorAssembler, StandardScaler}
-import org.apache.spark.sql.functions.col
 import java.sql.{Connection, DriverManager, Statement}
+import sys.process._
 
-class DataManager(sparkSession: SparkSession, clickhouseUrl: String, clickhouseUsername: String, clickhousePassword: String) {
+
+class DataMart {
+    private val appName = "DataMartApp"
+    private val masterUrl = "spark://spark:7077"
+    private val driverMemory = "1g"
+    private val executorMemory = "1g"
+    private val executorCores = 1
+    private val driverCores = 1
+    private val clickhouseUrl: String = sys.env("CLICKHOUSE_URL")
+    private val clickhouseUsername: String = sys.env("CLICKHOUSE_USER")
+    private val clickhousePassword: String = sys.env("CLICKHOUSE_PASSWORD")
+    private val dynamicAllocation = false
+    private val minExecutors = 1
+    private val maxExecutors = 1
+    private val initialExecutors = 1
+    
+    private val sparkSession: SparkSession = SparkSession.builder()
+      .appName(appName)
+      .master(masterUrl)
+      .config("spark.driver.cores", driverCores)
+      .config("spark.executor.cores", executorCores)
+      .config("spark.driver.memory", driverMemory)
+      .config("spark.executor.memory", executorMemory)
+      .config("spark.dynamicAllocation.enabled", dynamicAllocation)
+      .config("spark.dynamicAllocation.minExecutors", minExecutors)
+      .config("spark.dynamicAllocation.maxExecutors", maxExecutors)
+      .config("spark.dynamicAllocation.initialExecutors", initialExecutors)
+      .config("spark.jars", "clickhouse-jdbc-0.6.4-all.jar, clickhouse-spark-runtime-3.3_2.13-0.7.3.jar")
+      .getOrCreate()
   
   def readData(dbtable: String): DataFrame = {
     sparkSession.read
@@ -56,33 +84,7 @@ class DataManager(sparkSession: SparkSession, clickhouseUrl: String, clickhouseU
     preprocess(df)
   }
 
-
-def dropAndCreateTable(dbtable: String, df: DataFrame): Unit = {
-  val connection: Connection = DriverManager.getConnection(clickhouseUrl, clickhouseUsername, clickhousePassword)
-  val statement: Statement = connection.createStatement()
-
-  try {
-    statement.execute(s"DROP TABLE IF EXISTS $dbtable")
-
-    val createTableSQL = s"""
-      CREATE TABLE $dbtable (
-        code Int64,
-        prediction Int64
-    ) ENGINE = MergeTree()
-    ORDER BY prediction
-    """
-    
-    statement.execute(createTableSQL)
-
-  } finally {
-    statement.close()
-    connection.close()
-  }
-}
-
-
-  def overwriteData(dbtable: String, df: DataFrame): Unit = {
-    dropAndCreateTable(dbtable, df)
+  def appendData(dbtable: String, df: DataFrame): Unit = {
 
     df.write
       .format("jdbc")

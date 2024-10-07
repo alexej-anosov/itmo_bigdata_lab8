@@ -15,9 +15,14 @@ class ClickhouseConfig(BaseModel):
 
 class SparkSessionConfig(BaseModel):
     app_name: str
-    deploy_mode: str
     driver_memory: str
     executor_memory: str
+    master_url: str
+    executor_cores: str
+    dynamic_allocation: str
+    min_executors: str
+    max_executors: str
+    initial_executors: str
     
     
 class PathsConfig(BaseModel):

@@ -1,8 +1,13 @@
 spark:
   app_name: "my_kmeans"
-  deploy_mode: "local"
-  driver_memory: "1g"
+  master_url: "spark://192.168.49.2:30007"
+  driver_memory: "2g"
   executor_memory: "2g"
+  executor_cores: "2"
+  dynamic_allocation: "false"
+  min_executors: "1"
+  max_executors: "4"
+  initial_executors: "2"
 
 paths:
   data: "data/subset.csv"

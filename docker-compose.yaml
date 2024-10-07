@@ -1,6 +1,7 @@
-version: '3.7'
+version: '3'
 
 services:
+
   clickhouse-server:
     image: yandex/clickhouse-server:latest
     container_name: clickhouse-server
@@ -12,3 +13,21 @@ services:
       - CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD}
     volumes:
       - ./clickhouse_data:/var/lib/clickhouse
+
+  spark-master:
+    image: bitnami/spark:3.5.0
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=master
+    ports:
+      - "7077:7077"     # Spark master port
+      - "8081:8081"     # Spark master web UI port
+
+  spark-worker-1:
+    image: bitnami/spark:3.5.0
+    container_name: spark-worker-1
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+    depends_on:
+      - spark-master

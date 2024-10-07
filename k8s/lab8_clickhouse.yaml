@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clickhouse-server
+  namespace: lab8
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clickhouse
+  template:
+    metadata:
+      labels:
+        app: clickhouse
+    spec:
+      containers:
+      - name: clickhouse-server
+        image: yandex/clickhouse-server:latest
+        ports:
+        - containerPort: 8123
+        - containerPort: 9000
+        env:
+          - name: CLICKHOUSE_USER
+            valueFrom:
+              secretKeyRef:
+                name: lab8-secret
+                key: CLICKHOUSE_USER
+          - name: CLICKHOUSE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: lab8-secret
+                key: CLICKHOUSE_PASSWORD
+        volumeMounts:
+        - mountPath: /var/lib/clickhouse
+          name: clickhouse-data
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+      volumes:
+      - name: clickhouse-data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clickhouse-server
+  namespace: lab8
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 8123
+    targetPort: 8123
+    nodePort: 30000
+  - name: tcp
+    port: 9000
+    targetPort: 9000
+    nodePort: 30001
+  selector:
+    app: clickhouse

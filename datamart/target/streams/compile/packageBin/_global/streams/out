@@ -1,5 +1,5 @@
-[0m[[0m[0mdebug[0m] [0m[0mPackaging /root/itmo_bigdata_lab7/datamart/target/scala-2.12/datamart_2.12-0.1.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mPackaging /root/itmo_bigdata_lab8/datamart/target/scala-2.12/datamart_2.12-0.1.jar ...[0m
 [0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	DataManager.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /root/itmo_bigdata_lab7/datamart/target/scala-2.12/classes/DataManager.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	DataMart.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /root/itmo_bigdata_lab8/datamart/target/scala-2.12/classes/DataMart.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
