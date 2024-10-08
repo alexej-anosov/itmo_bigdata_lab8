@@ -1,0 +1,22 @@
+./k8s_init.sh
+
+minikube addons enable metrics-server
+
+minikube dashboard 
+
+netstat -tulpn | grep ':8001'
+
+kubectl proxy --address='0.0.0.0' --disable-filter=true &
+
+source venv/bin/activate
+
+python db_init.py
+
+python src/train.py
+
+kubectl get pods -n lab8
+
+kubectl exec -it <podname> -n lab8 -- /bin/bash
+
+apt-get update && apt-get install -y htop
+

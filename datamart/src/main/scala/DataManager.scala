@@ -6,7 +6,7 @@ import sys.process._
 
 class DataMart {
     private val appName = "DataMartApp"
-    private val masterUrl = "spark://spark:7077"
+    private val masterUrl = "spark://192.168.49.2:30007"
     private val driverMemory = "1g"
     private val executorMemory = "1g"
     private val executorCores = 1
