@@ -1,8 +1,8 @@
 spark:
   app_name: "my_kmeans"
   master_url: "spark://192.168.49.2:30007"
-  driver_memory: "2g"
-  executor_memory: "2g"
+  driver_memory: "1g"
+  executor_memory: "1g"
   executor_cores: "2"
   dynamic_allocation: "false"
   min_executors: "1"

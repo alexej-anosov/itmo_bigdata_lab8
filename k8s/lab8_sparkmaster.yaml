@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spark-master
+  name: spark-master-1
   namespace: lab8
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: spark-master
+      app: spark-master-1
   template:
     metadata:
       labels:
-        app: spark-master
+        app: spark-master-1
     spec:
       containers:
-      - name: spark-master
+      - name: spark-master-1
         image: bitnami/spark:3.5.0
         env:
           - name: SPARK_MODE
@@ -25,7 +25,7 @@ spec:
         resources:
           requests:
             memory: "512Mi"
-            cpu: "1"
+            cpu: "500m"
           limits:
             memory: "2Gi"
             cpu: "2"
@@ -33,12 +33,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: spark-master
+  name: spark-master-1
   namespace: lab8
 spec:
   type: NodePort
   ports:
-  - name: spark-master
+  - name: spark-master-1
     port: 7077
     targetPort: 7077
     nodePort: 30007
@@ -47,4 +47,4 @@ spec:
     targetPort: 8081
     nodePort: 30008
   selector:
-    app: spark-master
+    app: spark-master-1

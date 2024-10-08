@@ -6,7 +6,7 @@ from src.config import config
 csv_file_path = 'data/subset.csv'
         
 
-client = Client(host='localhost',
+client = Client(host='192.168.49.2', port='30001',
                 user=config.clickhouse.username,       
                 password=config.clickhouse.password   
         )

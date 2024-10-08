@@ -20,11 +20,11 @@ spec:
           - name: SPARK_MODE
             value: "worker"
           - name: SPARK_MASTER_URL
-            value: "spark://spark-master:7077"
+            value: "spark://spark-master-1:7077"
         resources:
           requests:
             memory: "512Mi"
             cpu: "500m"
           limits:
-            memory: "1Gi"
-            cpu: "1"
+            memory: "2Gi"
+            cpu: "2"
